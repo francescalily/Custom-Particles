@@ -23,7 +23,7 @@ const particleTexture = textureLoader.load("/textures/particles/2.png");
 //making the particles geometry and material
 const particlesGeometry = new THREE.BufferGeometry(1, 32, 32);
 //making own geometry
-const count = 5000;
+const count = 50000;
 
 const positions = new Float32Array(count * 3); //vertices
 //filling the array with random values next
@@ -41,8 +41,11 @@ const particlesMaterial = new THREE.PointsMaterial({
   sizeAttenuation: true,
   color: "#ffffff",
   transparent: true,
-  alphaTest: 0.001,
+  //   alphaTest: 0.001, //first technique to get sort out depth testing and getting rid of black backgrounds - test which is best for project - none have performance impact
   alphaMap: particleTexture, //wether there is depth to particles so ones further away look smaller and ones closer look bigger //false is better for performance
+  //   depthTest: false, // depth testing can be deactivated with alphaTest - when drawing the webgl tests if whats been draw is closer than whats already been drawn
+  depthWrite: false, // depth of whats being draw is stored in what we call a depth buffer - instead of the above we can tell the WebGL not to weite the particles that are in the depth buffer // good if other objects are in the scene
+  blending: THREE.AdditiveBlending, //with blending can tell the webgl to add color of the picelto the color of thr pixel already drawn // this can impact performance though
 });
 
 //making the points
@@ -82,11 +85,11 @@ scene.add(particles);
 // /**
 //  * Test cube
 //  */
-// const cube = new THREE.Mesh(
-//   new THREE.BoxGeometry(1, 1, 1),
-//   new THREE.MeshBasicMaterial()
-// );
-// scene.add(cube);
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial()
+);
+scene.add(cube);
 
 /**
  * Sizes
