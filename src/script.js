@@ -18,16 +18,17 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const particleTexture = textureLoader.load("/textures/particles/2.png");
 
 //making the particles geometry and material
 const particlesGeometry = new THREE.BufferGeometry(1, 32, 32);
 //making own geometry
-const count = 500;
+const count = 5000;
 
 const positions = new Float32Array(count * 3); //vertices
 //filling the array with random values next
 for (let i = 0; i < count * 3; i++) {
-  positions[i] = Math.random();
+  positions[i] = (Math.random() - 0.5) * 10;
 }
 
 particlesGeometry.setAttribute(
@@ -36,8 +37,12 @@ particlesGeometry.setAttribute(
 );
 
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.01, //size of particles
-  sizeAttenuation: true, //wether there is depth to particles so ones further away look smaller and ones closer look bigger //false is better for performance
+  size: 0.1, //size of particles
+  sizeAttenuation: true,
+  color: "#ffffff",
+  transparent: true,
+  alphaTest: 0.001,
+  alphaMap: particleTexture, //wether there is depth to particles so ones further away look smaller and ones closer look bigger //false is better for performance
 });
 
 //making the points
